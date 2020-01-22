@@ -24,7 +24,7 @@
                             <?php if ($dropdownKey === "logOf"): ?>
                                 <div class="dropdown-divider"></div>
                             <?php endif; ?>
-                            <a class="dropdown-item" href="#"><?= $dropdownItem ?></a>
+                            <a class="dropdown-item" href="?page=<?=$dropdownKey?>"><?= $dropdownItem ?></a>
                         <?php endforeach; ?>
                     </div>
                 <?php endif; ?>

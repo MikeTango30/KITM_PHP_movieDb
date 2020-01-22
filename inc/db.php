@@ -8,5 +8,14 @@
 
 $host = 'localhost';
 $db = 'moviedb';
-$username = "admin";
-$password = "kitm";
+$username = "root";
+$password = "";
+
+$options = [
+    PDO::ATTR_ERRMODE               =>PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE    =>PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES      =>false
+];
+
+$dsn = "mysql:host=$host;dbname=$db";
+$conn = new PDO($dsn, $username, $password, $options);

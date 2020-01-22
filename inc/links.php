@@ -19,6 +19,7 @@ $menus = [
         "about" => "Apie projektą",
         "controls" => [
             "categoryControl" => "Kategorijų valdymas",
+            "add" => "Pridėti filmą",
             "movieControl" => "Filmų valdymas",
             "logOf" => "Atsijungti"
             ]

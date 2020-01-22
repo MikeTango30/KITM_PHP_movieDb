@@ -1,9 +1,7 @@
 <h2>VISI FILMAI</h2>
 <?php
-$dsn = "mysql:host=$host;dbname=$db";
 
 try {
-    $conn = new PDO($dsn, $username, $password);
     if ($conn) {
 
         $stmt = $conn->query("SELECT * FROM movies JOIN genres ON movies.genre_id = genres.id");
@@ -21,6 +19,7 @@ try {
         <td><?= $movie["id"] ?></td>
         <td><?= ucfirst($movie["title"]) ?></td>
         <td><?= ucfirst($movie["description"]) ?></td>
+        <td><?= ucfirst($movie["year"]) ?></td>
         <td><?= ucfirst($movie["director"]) ?></td>
         <td><?= $movie["imdb"] ?></td>
         <td><?= ucfirst($movie["genre_name"]) ?></td>
