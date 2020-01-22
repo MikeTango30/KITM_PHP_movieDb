@@ -9,17 +9,18 @@
 $menus = [
     "mainNavigation" => [
         "newest" => "Naujausi",
+        "all" => "Visi filmai",
         "search" => "Paieška",
-        "profile" => "Profile",
+        "profile" => "Profilis",
         "statistics" => "Statistika"
         ],
     "sideNavigation" => [
-        "home" => "Pradinis",
-        "controls" => "Veiksmai",
-        "menuDropdown" => [
+        "/" => "Pradinis",
+        "about" => "Apie projektą",
+        "controls" => [
             "categoryControl" => "Kategorijų valdymas",
             "movieControl" => "Filmų valdymas",
             "logOf" => "Atsijungti"
-        ]
+            ]
     ]
 ];
