@@ -20,5 +20,14 @@ if (isset($_GET['page'])) {
         case('add'):
             include ('templates/'.ACTIVE_TEMPLATE.'/pages/add_movie.page.php');
             break;
+        case('by_genre'):
+            include ('templates/'.ACTIVE_TEMPLATE.'/pages/filter_films.page.php');
+            break;
+        case('movie_control'):
+            include ('templates/'.ACTIVE_TEMPLATE.'/pages/movie_control.page.php');
+            break;
+        default: include ('templates/'.ACTIVE_TEMPLATE.'/pages/all_movie.page.php');
+            break;
+
     }
 }

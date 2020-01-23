@@ -13,6 +13,8 @@
   <link href="templates/<?=ACTIVE_TEMPLATE?>/css/simple-sidebar.css" rel="stylesheet">
   <!-- My style-->
   <link href="templates/<?=ACTIVE_TEMPLATE?>/css/styles.css" rel="stylesheet">
+  <!--FontAwesome-->
+  <script src="https://kit.fontawesome.com/b80f6d846e.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
