@@ -23,3 +23,14 @@ form {
   margin-bottom: 1rem;
 }
 
+.delete {
+  height: 600px;
+  .really-delete {
+    background-color: pink;
+  }
+  .cancel {
+    background-color: lightgreen;
+  }
+}
+
+

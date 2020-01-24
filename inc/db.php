@@ -7,7 +7,7 @@
 */
 
 $host = 'localhost';
-$db = 'moviedb';
+$db = 'moviesdb';
 $username = "root";
 $password = "";
 

@@ -1,17 +1,9 @@
 <?php
 
-if (isset($_GET["delete"])) {
-  if (preg_match("/\d/", htmlspecialchars($_GET["delete"]))) {
-      $deleteMovieId = htmlspecialchars($_GET["delete"]);
-  }
-
-}
-
 if (isset($_GET["edit"])) {
     if (preg_match("/\d/", htmlspecialchars($_GET["edit"]))) {
         $editMovieId = htmlspecialchars($_GET["edit"]);
     }
-
 }
 
 
@@ -28,6 +20,9 @@ try {
 ?>
 <div class="row justify-content-center">
   <h2>Filmų valdymas</h2>
+</div>
+<div class="row justify-content-center">
+    <h3><a href="?page=add" class="btn btn-outline-primary mb-3">Pridėti filmą</a></h3>
 </div>
 <div class="container">
   <table class="table table-bordered">
@@ -47,11 +42,11 @@ try {
       <td><?= ucfirst($movie["description"]) ?></td>
       <td><?= ucfirst($movie["year"]) ?></td>
       <td><?= ucfirst($movie["director"]) ?></td>
-      <td><?= $movie["imdb"] ?></td>
+      <td><?= $movie["imdb"]?></td>
       <td><?= ucfirst($movie["genre_name"]) ?></td>
       <td>
-        <a href="?page=movie_control&delete=<?=$movie["id"]?>" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-        <a href="?page=movie_control&edit=<?=$movie["id"]?>" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+        <a href="?page=delete&delete=<?=$movie["id"]?>" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+        <a href="?page=update&edit=<?=$movie["id"]?>" class="btn btn-primary"><i class="fas fa-edit"></i></a>
       </td>
     </tr>
       <?php endforeach; ?>

@@ -26,6 +26,12 @@ if (isset($_GET['page'])) {
         case('movie_control'):
             include ('templates/'.ACTIVE_TEMPLATE.'/pages/movie_control.page.php');
             break;
+        case('delete'):
+            include ('templates/'.ACTIVE_TEMPLATE.'/pages/delete_film.page.php');
+            break;
+        case('update'):
+            include ('templates/'.ACTIVE_TEMPLATE.'/pages/update_film.page.php');
+            break;
         default: include ('templates/'.ACTIVE_TEMPLATE.'/pages/all_movie.page.php');
             break;
 

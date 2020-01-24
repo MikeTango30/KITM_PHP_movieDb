@@ -16,4 +16,11 @@ h2 {
 form {
   margin-bottom: 1rem; }
 
+.delete {
+  height: 600px; }
+  .delete .really-delete {
+    background-color: pink; }
+  .delete .cancel {
+    background-color: lightgreen; }
+
 /*# sourceMappingURL=styles.css.map */
