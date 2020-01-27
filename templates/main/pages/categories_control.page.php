@@ -1,21 +1,12 @@
 <?php
 
 if (isset($_GET["delete"])) {
-    if (preg_match("/\d/", htmlspecialchars($_GET["id"]))) {
+    if (isValidId(htmlspecialchars($_GET["id"]))) {
         $editMovieId = htmlspecialchars($_GET["edit"]);
     }
 }
-$genres = [];
+$genres = getAllGenres();
 
-try {
-    if ($conn) {
-        $query = "SELECT * FROM genres";
-        $stmt = $conn->query($query);
-        $genres = $stmt->fetchAll();
-    }
-} catch (PDOException $e) {
-    echo $e->getMessage();
-}
 
 ?>
 <div class="row justify-content-center">

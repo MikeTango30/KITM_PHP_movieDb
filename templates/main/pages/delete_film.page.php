@@ -4,24 +4,19 @@ $movie = [];
 $deleteMovieId = isset($_GET["delete"]) ? htmlspecialchars($_GET["delete"]) : htmlspecialchars($_GET["deleteRly"]);
 
 if (isset($deleteMovieId)) {
-    if (preg_match("/\d/", $deleteMovieId)) {
-        $stmt = $conn->prepare("SELECT `title`, `year` FROM `movies` WHERE `id` = :movieId");
-        $stmt->bindValue(":movieId", $deleteMovieId, PDO::PARAM_INT);
-        $stmt->execute();
-        $movie = $stmt->fetch();
+    if (isValidId($deleteMovieId)) {
+        $movie = getMovieById($deleteMovieId);
     }
-
 }
 
 if (isset($_GET["deleteRly"])) {
-    if (preg_match("/\d/", $deleteMovieId)) {
-        $stmt = $conn->prepare("DELETE FROM movies WHERE `id` = :movieId");
-        $stmt->bindValue(":movieId", $deleteMovieId, PDO::PARAM_INT);
-        $stmt->execute();
+    if (isValidId($deleteMovieId)) {
+        deleteMovie($deleteMovieId);
         header('Location:/KITM_PHP_movieDb/?page=movie_control');
     }
 }
 ?>
+
 <div class="container-fluid">
     <div class="container delete">
         <div class="row h-100">

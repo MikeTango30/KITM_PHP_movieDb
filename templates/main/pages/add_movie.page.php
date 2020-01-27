@@ -1,57 +1,13 @@
 <?php
 
-try {
-    if ($conn) {
-        $query = "SELECT * FROM genres";
-        $stmt = $conn->query($query);
-        $genres = $stmt->fetchAll();
-    }
-} catch (PDOException $e) {
-    echo $e->getMessage();
-}
-
-
+$genres = getAllGenres();
 $validationErrors = [];
 if (isset($_POST["add"])) {
-    //Validation
-    if (!preg_match("/\w{1,100}/", htmlspecialchars($_POST["title"]))) {
-        $validationErrors[] = "Title is required";
-    }
-    if (!preg_match("/\w{1,100}/", htmlspecialchars($_POST["description"]))) {
-        $validationErrors[] = "Description is not valid";
-    }
-    if (!preg_match("/\w{1,100}/", htmlspecialchars($_POST["director"]))) {
-        $validationErrors[] = "Director is not valid";
-    }
-    if (!preg_match("/^\d\.\d$/", htmlspecialchars($_POST["imdb"]))) {
-        $validationErrors[] = "Rating is not valid";
-    }
-    if (empty(htmlspecialchars($_POST["year"]))) {
-        $validationErrors[] = "Year is required";
-    }
-    if (empty(htmlspecialchars($_POST["genre"]))) {
-        $validationErrors[] = "Genre is required";
-    }
-
-    //insert db
+    //Validation errors
+    $validationErrors = validateAddMovieFormData($_POST);
+    //insert into db
     if (!$validationErrors) {
-        try {
-            if ($conn) {
-                $query = "INSERT INTO `movies` (`title`, `description`, `year`, `director`, `imdb`, `genre_id`)
-                        VALUES(:title, :description, :metai, :director, :imdb, :genre_id)";
-                $stmt = $conn->prepare($query);
-                $stmt->bindParam(':title', $_POST["title"], PDO::PARAM_STR);
-                $stmt->bindParam(':description', $_POST["description"], PDO::PARAM_STR);
-                $stmt->bindParam(':metai', $_POST["year"], PDO::PARAM_STR);
-                $stmt->bindParam(':director', $_POST["director"], PDO::PARAM_STR);
-                $stmt->bindParam(':imdb', $_POST["imdb"], PDO::PARAM_STR);
-                $stmt->bindParam(':genre_id', $_POST["genre"], PDO::PARAM_STR);
-                $stmt->execute();
-                header('Location:/KITM_PHP_movieDb/?page=all');
-            }
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
+        insertMovie($_POST);
     }
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-
+$movies = getAllMovies();
 ?>
 
 <div class="row justify-content-center">

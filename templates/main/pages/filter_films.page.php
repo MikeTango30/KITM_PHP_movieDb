@@ -1,17 +1,16 @@
 <?php
-$genres = [];
+$genres = getAllGenres() ?? [];
 $movies = [];
 $validationErrors = [];
 
-try {
-    if ($conn) {
-        $query = "SELECT * FROM genres";
-        $stmt = $conn->query($query);
-        $genres = $stmt->fetchAll();
+if (isset($_GET["filter"])) {
+
+    if (!$validationErrors) {
+        $genreId = intval($_GET["genre"]);
+        $movies = getMovieByGenre($genreId);
     }
-} catch (PDOException $e) {
-    echo $e->getMessage();
 }
+
 ?>
 <div class="container-fluid">
   <div class="row justify-content-center">
@@ -35,36 +34,6 @@ try {
     </div>
   </div>
 </div>
-
-
-<?php
-if (isset($_GET["filter"])) {
-
-    if (empty($_GET["genre"])) {
-        $validationErrors[] = "Reikia pasirinkti žanrą";
-    }
-
-    if (!$validationErrors) {
-        $genreId = intval($_GET["genre"]);
-
-        try {
-            if ($conn) {
-                $query = "SELECT movies.id, title, description, year, director, imdb, genre_name 
-                                        FROM movies 
-                                        JOIN genres ON movies.genre_id = genres.id WHERE genres.id = :genreId";
-                $stmt = $conn->prepare($query);
-                $stmt->bindValue(':genreId', $genreId, PDO::PARAM_INT);
-                $stmt->execute();
-                $movies = $stmt->fetchAll();
-            }
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
-    }
-}
-
-?>
-
 <div class="container">
   <div class="row">
     <div class="col errors">

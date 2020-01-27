@@ -2,47 +2,20 @@
 $validationErrors = [];
 if (isset($_POST["add"])) {
     //Validation
-    if (!preg_match("/\w{1,100}/", htmlspecialchars($_POST["genre_name"]))) {
-        $validationErrors[] = "Įveskite kategorijos pavadinimą";
-    }
+    $validationErrors = validateAddGenreFormData();
 
     if (!$validationErrors) {
-        try {
-            if ($conn) {
-                $query = "SELECT id FROM genres WHERE genre_name = :genreName";
-                $stmt = $conn->prepare($query);
-                $stmt->bindParam('genreName', $_POST["genre_name"], PDO::PARAM_STR);
-                $stmt->execute();
-                if (!$stmt->fetch()) {
-                    try {
-                        if ($conn) {
-                            $query = "INSERT INTO genres (genre_name) VALUES (:genreName)";
-                            $stmt = $conn->prepare($query);
-                            $stmt->bindParam('genreName', $_POST["genre_name"], PDO::PARAM_STR);
-                            $stmt->execute();
-                            header('Location:/KITM_PHP_movieDb/?page=categories_control');
-                        }
-                    } catch (PDOException $e) {
-                        echo $e->getMessage();
-                    }
-                } else {
-                    $validationErrors[] = "Toks Žanras jau egzistuoja";
-                };
-            }
-         }
-catch
-    (PDOException $e) {
-        echo $e->getMessage();
-    }
-
+        if (!insertGenre($_POST["genre_name"])){
+            $validationErrors[] = "Toks Žanras jau egzistuoja";
         }
+    }
 }
 ?>
 
-<div class="row">
-  <h1>Pridėti naują kategoriją</h1>
-</div>
 <div class="container">
+  <div class="row justify-content-center">
+    <h1>Pridėti naują kategoriją</h1>
+  </div>
   <div class="row">
     <div class="col errors">
         <?php if ($validationErrors): ?>
