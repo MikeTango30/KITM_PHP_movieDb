@@ -24,7 +24,7 @@ if (isset($_POST["login"])) {
   <h2>Prisijungimas</h2>
   </div>
   <div class="row justify-content-center">
-    <div class="col-4">
+    <div class="col col-md-4">
       <div class="row">
         <div class="col errors">
             <?php if ($validationErrors): ?>

@@ -17,7 +17,7 @@ if (isset($_GET["filter"])) {
     <h2>Filmai pagal žanrą</h2>
   </div>
   <div class="row justify-content-center">
-    <div class="col-3">
+    <div class="col col-md-3">
       <form>
         <input type="hidden" name="page" value="by_genre">
         <div class="form-group">
