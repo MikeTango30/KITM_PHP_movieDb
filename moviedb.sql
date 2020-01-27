@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 2020 m. Sau 23 d. 10:11
--- Server version: 10.1.26-MariaDB
--- PHP Version: 7.1.9
+-- Generation Time: 2020 m. Sau 27 d. 22:22
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.2.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `moviedb`
 --
+CREATE DATABASE IF NOT EXISTS `moviedb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `moviedb`;
 
 -- --------------------------------------------------------
 
@@ -69,6 +71,25 @@ INSERT INTO `movies` (`id`, `title`, `description`, `director`, `year`, `imdb`, 
 (16, '12 Monkeys', 'Briusas Willisas distopijoje.', 'some guy', '1995', '8.5', 1),
 (17, 'filmas', 'puikus aprasymas', 'asta', '1921', '6.5', 1);
 
+-- --------------------------------------------------------
+
+--
+-- Sukurta duomenų struktūra lentelei `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Sukurta duomenų kopija lentelei `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `password`) VALUES
+(1, 'admin', '$2y$10$CxL3nVzE4CJh1pH7mpwUJOga0B8kWTpPigdiGp.SfOXZi4lAIn65O');
+
 --
 -- Indexes for dumped tables
 --
@@ -86,6 +107,12 @@ ALTER TABLE `movies`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -100,6 +127,12 @@ ALTER TABLE `genres`
 --
 ALTER TABLE `movies`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
