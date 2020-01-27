@@ -51,7 +51,7 @@ function getMovieById($id){
     return $movie;
 }
 
-function getMovieByGenre($genreId) {
+function validate($genreId) {
     $conn = connectDb();
     $movies = [];
     try {
@@ -73,9 +73,12 @@ function getMovieByGenre($genreId) {
 }
 
 function isValidGenre($genre){
+    $validationErrors = [];
     if (empty($genre)) {
         $validationErrors[] = "Reikia pasirinkti žanrą";
     }
+
+    return $validationErrors;
 }
 
 function deleteMovie($id) {

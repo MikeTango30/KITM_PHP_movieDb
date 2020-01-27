@@ -4,7 +4,7 @@ $movies = [];
 $validationErrors = [];
 
 if (isset($_GET["filter"])) {
-
+//      TODO functions line 54
     if (!$validationErrors) {
         $genreId = intval($_GET["genre"]);
         $movies = getMovieByGenre($genreId);
