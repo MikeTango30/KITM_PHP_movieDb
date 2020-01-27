@@ -51,7 +51,7 @@ function getMovieById($id){
     return $movie;
 }
 
-function validate($genreId) {
+function getMovieByGenre($genreId) {
     $conn = connectDb();
     $movies = [];
     try {
@@ -72,7 +72,7 @@ function validate($genreId) {
     return $movies;
 }
 
-function isValidGenre($genre){
+function validateGenre($genre){
     $validationErrors = [];
     if (empty($genre)) {
         $validationErrors[] = "Reikia pasirinkti žanrą";
@@ -251,3 +251,21 @@ function insertMovie() {
     $conn = null;
 }
 
+function isValidLogin($userName, $passWord) {
+    $conn = connectDb();
+    $passwordHash = "";
+
+    try {
+        if ($conn) {
+            $query = "SELECT password FROM users WHERE `name` = :username";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam("username", htmlspecialchars($userName), PDO::PARAM_STR);
+            $stmt->execute();
+            $passwordHash = $stmt->fetch();
+        }
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+
+    return password_verify($passWord, $passwordHash["password"]);
+}

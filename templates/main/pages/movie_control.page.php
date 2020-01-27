@@ -1,5 +1,9 @@
 <?php
+session_start();
+?>
+<?php if($_SESSION["user"] === "admin"):?>
 
+<?php
 if (isset($_GET["edit"])) {
     if (isValidId(htmlspecialchars($_GET["edit"]))) {
         $editMovieId = htmlspecialchars($_GET["edit"]);
@@ -44,3 +48,4 @@ $movies = getAllMovies();
     </tr>
   </table>
 </div>
+<?php endif;?>

@@ -41,6 +41,12 @@ if (isset($_GET['page'])) {
         case('delete_category'):
             include ('templates/'.ACTIVE_TEMPLATE.'/pages/delete_category.page.php');
             break;
+        case('login'):
+            include ('templates/'.ACTIVE_TEMPLATE.'/pages/login.page.php');
+            break;
+        case('logof'):
+            include ('templates/'.ACTIVE_TEMPLATE.'/pages/logof.page.php');
+            break;
         default: include ('templates/'.ACTIVE_TEMPLATE.'/pages/all_movie.page.php');
             break;
     }

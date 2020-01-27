@@ -12,7 +12,7 @@ $menus = [
         "all" => "Visi filmai",
         "by_genre" => "Filmai pagal žanrą",
         "search" => "Paieška",
-//        "profile" => "Profilis",
+        "login" => "Prisijungti",
 //        "statistics" => "Statistika"
         ],
     "sideNavigation" => [
@@ -22,7 +22,7 @@ $menus = [
             "categories_control" => "Kategorijų valdymas",
             "add" => "Pridėti filmą",
             "movie_control" => "Filmų valdymas",
-//            "logOf" => "Atsijungti"
+            "logof" => "Atsijungti"
             ]
     ]
 ];
