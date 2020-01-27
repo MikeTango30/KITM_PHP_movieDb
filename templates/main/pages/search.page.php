@@ -2,38 +2,12 @@
 $validationErrors = [];
 $movies = [];
 $allMovies = [];
-
-try {
-    if ($conn) {
-        $stmt = $conn->query("SELECT title FROM movies");
-        $allMovies = $stmt->fetchAll();
-    }
-} catch (PDOException $e) {
-    echo $e->getMessage();
-}
+$allMovies = getAllMovieTitles();
 
 if (isset($_GET["searchBtn"])) {
-
-    if (!preg_match("/\w{1,100}/", htmlspecialchars($_GET["search"]))) {
-        $validationErrors[] = "Įveskite paieškos raktažodį";
-    }
-
+    $validationErrors = validateSearch();
     if (!$validationErrors) {
-        $searchQuery = htmlspecialchars($_GET["search"]);
-
-        try {
-            if ($conn) {
-                $query = "SELECT movies.id, title, description, year, director, imdb, genre_name 
-                                        FROM movies 
-                                        JOIN genres ON movies.genre_id = genres.id WHERE title LIKE ?";
-                $stmt = $conn->prepare($query);
-                $stmt->bindValue(1, "%$searchQuery%", PDO::PARAM_STR);
-                $stmt->execute();
-                $movies = $stmt->fetchAll();
-            }
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
+        $movies = searchMovies($_GET["search"]);
     }
 }
 ?>

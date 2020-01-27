@@ -1,5 +1,11 @@
 <?php
-session_start();
+if(!isset($_COOKIE["PHPSESSID"]))
+{
+    session_start();
+}
+if (!isset($_SESSION["user"])) {
+    header('Location:/KITM_PHP_movieDb/?page=login');
+}
 ?>
 <?php if($_SESSION["user"] === "admin"):?>
 
@@ -9,10 +15,9 @@ if (isset($_GET["edit"])) {
         $editMovieId = htmlspecialchars($_GET["edit"]);
     }
 }
-
 $movies = getAllMovies();
-
 ?>
+
 <div class="row justify-content-center">
   <h2>Filmų valdymas</h2>
 </div>

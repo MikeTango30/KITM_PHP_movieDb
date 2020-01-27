@@ -1,14 +1,23 @@
 <?php
+if(!isset($_COOKIE["PHPSESSID"]))
+{
+    session_start();
+}
+if (!isset($_SESSION["user"])) {
+    header('Location:/KITM_PHP_movieDb/?page=login');
+}
+?>
+<?php if($_SESSION["user"] === "admin"):?>
 
+<?php
 if (isset($_GET["delete"])) {
     if (isValidId(htmlspecialchars($_GET["id"]))) {
         $editMovieId = htmlspecialchars($_GET["edit"]);
     }
 }
 $genres = getAllGenres();
-
-
 ?>
+
 <div class="row justify-content-center">
     <h2>Kategorijų valdymas</h2>
 </div>
@@ -33,3 +42,4 @@ $genres = getAllGenres();
         </tr>
     </table>
 </div>
+<?php endif;?>

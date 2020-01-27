@@ -1,16 +1,25 @@
 <?php
-if (isset($_POST["login"])) {
-    $userName = htmlspecialchars($_POST["username"]);
-    $passWord = htmlspecialchars($_POST["password"]);
+if(!isset($_COOKIE["PHPSESSID"]))
+{
+    session_start();
+}
+$_SESSION["counter"] = 0;
 
-    if (isValidLogin($userName, $passWord)) {
-        $_SESSION["user"] = "admin";
-        $_SESSION["counter"] = 0;
-        header('Location:/KITM_PHP_movieDb/?page=movie_control');
+if (isset($_SESSION["user"]) && $_SESSION["user"] === "admin") {
+    header('Location:/KITM_PHP_movieDb/?page=movie_control');
+}
+
+$validationErrors = [];
+
+if (isset($_POST["login"])) {
+    $validationErrors = validateLogin();
+    if (!$validationErrors && verifyPassword()) {
+        loginUser();
     } else {
         $_SESSION["counter"] += 1;
-        if ($_SESSION["counter"] === 5) {
-//      todo
+        var_dump($_SESSION["counter"]);
+        if ($_SESSION["counter"] >= 5) {
+          sleep(10);
         }
     }
 }
@@ -22,6 +31,19 @@ if (isset($_POST["login"])) {
   </div>
   <div class="row justify-content-center">
     <div class="col-4">
+      <div class="row">
+        <div class="col errors">
+            <?php if ($validationErrors): ?>
+              <div class="alert alert-danger" role="alert">
+                <ul>
+                    <?php foreach ($validationErrors as $validationError): ?>
+                      <li><?= $validationError ?></li>
+                    <?php endforeach; ?>
+                </ul>
+              </div>
+            <?php endif; ?>
+        </div>
+      </div>
       <form method="post">
         <div class="form-group">
           <input type="text" class="form-control" id="login" name="username" placeholder="Prisijungimo vardas">

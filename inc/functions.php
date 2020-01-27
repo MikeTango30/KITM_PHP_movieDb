@@ -37,7 +37,9 @@ function getMovieById($id){
 
     try {
         if ($conn) {
-            $stmt = $conn->prepare("SELECT `title`, `year` FROM `movies` WHERE `id` = :movieId");
+            $stmt = $conn->prepare("SELECT movies.id, title, description, year, director, imdb, genre_name 
+                                        FROM movies 
+                                        JOIN genres ON movies.genre_id = genres.id WHERE movies.id = :movieId");
             $stmt->bindValue(":movieId", $id, PDO::PARAM_INT);
             $stmt->execute();
             $movie = $stmt->fetch();
@@ -72,6 +74,22 @@ function getMovieByGenre($genreId) {
     return $movies;
 }
 
+function getAllMovieTitles() {
+    $conn = connectDb();
+    $movies = [];
+    try {
+        if ($conn) {
+            $stmt = $conn->query("SELECT title FROM movies");
+            $movies = $stmt->fetchAll();
+        }
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+    $conn = null;
+
+    return $movies;
+}
+
 function validateGenre($genre){
     $validationErrors = [];
     if (empty($genre)) {
@@ -79,21 +97,6 @@ function validateGenre($genre){
     }
 
     return $validationErrors;
-}
-
-function deleteMovie($id) {
-    $conn = connectDb();
-    try {
-        if ($conn) {
-            $stmt = $conn->prepare("DELETE FROM movies WHERE `id` = :movieId");
-            $stmt->bindValue(":movieId", $id, PDO::PARAM_INT);
-            $stmt->execute();
-            $conn = null;
-        }
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-    $conn = null;
 }
 
 function getAllGenres() {
@@ -134,55 +137,13 @@ function getGenre($id) {
     return $genre;
 }
 
-function deleteGenre($id) {
-    $conn = connectDb();
-    try {
-        if ($conn) {
-            $stmt = $conn->prepare("DELETE FROM genres WHERE id = :genreId");
-            $stmt->bindValue(":genreId", $id, PDO::PARAM_INT);
-            $stmt->execute();
-            $conn = null;
-        }
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-    $conn = null;
-}
-
-
-function validateAddMovieFormData() {
-    $validationErrors = [];
-
-    if (!preg_match("/\w{1,100}/", htmlspecialchars($_POST["title"]))) {
-        $validationErrors[] = "Title is required";
-    }
-    if (!preg_match("/\w{1,100}/", htmlspecialchars($_POST["description"]))) {
-        $validationErrors[] = "Description is not valid";
-    }
-    if (!preg_match("/\w{1,100}/", htmlspecialchars($_POST["director"]))) {
-        $validationErrors[] = "Director is not valid";
-    }
-    if (!preg_match("/^\d\.\d$/", htmlspecialchars($_POST["imdb"]))) {
-        $validationErrors[] = "Rating is not valid";
-    }
-    if (empty(htmlspecialchars($_POST["year"]))) {
-        $validationErrors[] = "Year is required";
-    }
-    if (empty(htmlspecialchars($_POST["genre"]))) {
-        $validationErrors[] = "Genre is required";
+function isValidText($text) {
+    $isValid = false;
+    if (preg_match("/\w{1,100}/", htmlspecialchars($text))) {
+        $isValid = true;
     }
 
-    return $validationErrors;
-
-}
-
-function validateAddGenreFormData() {
-    $validationErrors = [];
-    if (!preg_match("/\w{1,100}/", htmlspecialchars($_POST["genre_name"]))) {
-        $validationErrors[] = "Įveskite kategorijos pavadinimą";
-    }
-
-    return $validationErrors;
+    return $isValid;
 }
 
 function isValidId($id) {
@@ -194,64 +155,46 @@ function isValidId($id) {
     return $isValid;
 }
 
-function insertGenre($genreName) {
+function searchMovies($searchQuery) {
     $conn = connectDb();
-    $validationErrors = [];
+    $movies = [];
     try {
         if ($conn) {
-            $query = "SELECT id FROM genres WHERE genre_name = :genreName";
+            $query = "SELECT movies.id, title, description, year, director, imdb, genre_name 
+                                        FROM movies 
+                                        JOIN genres ON movies.genre_id = genres.id WHERE title LIKE ?";
             $stmt = $conn->prepare($query);
-            $stmt->bindParam('genreName', $genreName, PDO::PARAM_STR);
+            $stmt->bindValue(1, "%$searchQuery%", PDO::PARAM_STR);
             $stmt->execute();
-            if (!$stmt->fetch()) {
-                try {
-                    if ($conn) {
-                        $query = "INSERT INTO genres (genre_name) VALUES (:genreName)";
-                        $stmt = $conn->prepare($query);
-                        $stmt->bindParam('genreName', $genreName, PDO::PARAM_STR);
-                        $stmt->execute();
-                        header('Location:/KITM_PHP_movieDb/?page=categories_control');
-                    }
-                } catch (PDOException $e) {
-                    echo $e->getMessage();
-                }
-            } else {
-
-                return false;
-            };
-        }
-    } catch
-    (PDOException $e) {
-        echo $e->getMessage();
-    }
-    $conn = null;
-
-    return $validationErrors;
-}
-
-function insertMovie() {
-    $conn = connectDb();
-    try {
-        if ($conn) {
-            $query = "INSERT INTO `movies` (`title`, `description`, `year`, `director`, `imdb`, `genre_id`)
-                        VALUES(:title, :description, :metai, :director, :imdb, :genre_id)";
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':title', $_POST["title"], PDO::PARAM_STR);
-            $stmt->bindParam(':description', $_POST["description"], PDO::PARAM_STR);
-            $stmt->bindParam(':metai', $_POST["year"], PDO::PARAM_STR);
-            $stmt->bindParam(':director', $_POST["director"], PDO::PARAM_STR);
-            $stmt->bindParam(':imdb', $_POST["imdb"], PDO::PARAM_STR);
-            $stmt->bindParam(':genre_id', $_POST["genre"], PDO::PARAM_STR);
-            $stmt->execute();
-            header('Location:/KITM_PHP_movieDb/?page=all');
+            $movies = $stmt->fetchAll();
         }
     } catch (PDOException $e) {
         echo $e->getMessage();
     }
     $conn = null;
+
+    return $movies;
 }
 
-function isValidLogin($userName, $passWord) {
+function validateLogin() {
+    $validationErrors = [];
+    if (!isValidText($_POST["username"]) || !isValidText($_POST["password"])) {
+        $validationErrors[] = "Prisijungimo vardas ir/arba slaptažodis yra netinkamas(-i)";
+    }
+
+    return $validationErrors;
+}
+
+function validateSearch() {
+    $validationErrors = [];
+    if (!isValidText($_GET["search"])) {
+        $validationErrors[] = "Įveskite paieškos raktažodį";
+    }
+
+    return $validationErrors;
+}
+
+function verifyPassword() {
     $conn = connectDb();
     $passwordHash = "";
 
@@ -259,7 +202,7 @@ function isValidLogin($userName, $passWord) {
         if ($conn) {
             $query = "SELECT password FROM users WHERE `name` = :username";
             $stmt = $conn->prepare($query);
-            $stmt->bindParam("username", htmlspecialchars($userName), PDO::PARAM_STR);
+            $stmt->bindParam("username", $_POST["username"], PDO::PARAM_STR);
             $stmt->execute();
             $passwordHash = $stmt->fetch();
         }
@@ -267,5 +210,11 @@ function isValidLogin($userName, $passWord) {
         echo $e->getMessage();
     }
 
-    return password_verify($passWord, $passwordHash["password"]);
+    return password_verify($_POST["password"], $passwordHash["password"]);
+}
+
+function loginUser() {
+    $_SESSION["user"] = "admin";
+    $_SESSION["counter"] = 0;
+    header('Location:/KITM_PHP_movieDb/?page=movie_control');
 }

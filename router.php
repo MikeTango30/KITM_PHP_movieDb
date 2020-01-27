@@ -2,8 +2,8 @@
 
 if (isset($_GET['page'])) {
     switch (htmlspecialchars($_GET['page'])) {
-        case('newest'):
-            include ('templates/'.ACTIVE_TEMPLATE.'/pages/newest.page.php');
+        case('/'):
+            include ('templates/'.ACTIVE_TEMPLATE.'/pages/all_movie.page.php');
             break;
         case('all'):
             include ('templates/'.ACTIVE_TEMPLATE.'/pages/all_movie.page.php');
@@ -47,7 +47,7 @@ if (isset($_GET['page'])) {
         case('logof'):
             include ('templates/'.ACTIVE_TEMPLATE.'/pages/logof.page.php');
             break;
-        default: include ('templates/'.ACTIVE_TEMPLATE.'/pages/all_movie.page.php');
+        default: include ('templates/'.ACTIVE_TEMPLATE.'/pages/error.page.php');
             break;
     }
 }

@@ -1,5 +1,15 @@
 <?php
+if(!isset($_COOKIE["PHPSESSID"]))
+{
+    session_start();
+}
+if (!isset($_SESSION["user"])) {
+    header('Location:/KITM_PHP_movieDb/?page=login');
+}
+?>
+<?php if($_SESSION["user"] === "admin"):?>
 
+<?php
 $genres = getAllGenres();
 $validationErrors = [];
 if (isset($_POST["add"])) {
@@ -68,3 +78,4 @@ if (isset($_POST["add"])) {
     <button type="submit" name="add" class="btn btn-primary">Įkelti</button>
   </form>
 </div>
+<?php endif;?>

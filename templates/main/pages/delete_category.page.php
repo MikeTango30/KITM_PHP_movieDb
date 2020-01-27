@@ -1,4 +1,15 @@
 <?php
+if(!isset($_COOKIE["PHPSESSID"]))
+{
+    session_start();
+}
+if (!isset($_SESSION["user"])) {
+    header('Location:/KITM_PHP_movieDb/?page=login');
+}
+?>
+<?php if($_SESSION["user"] === "admin"):?>
+
+<?php
 $genre = [];
 $deleteGenreId = isset($_GET["delete"]) ? htmlspecialchars($_GET["delete"]) : htmlspecialchars($_GET["deleteRly"]);
 
@@ -10,7 +21,6 @@ if (isset($deleteGenreId)) {
     if (isset($_GET["deleteRly"])) {
         if (isValidId($deleteGenreId)) {
             deleteGenre($deleteGenreId);
-            header('Location:/KITM_PHP_movieDb/?page=categories_control');
         }
     }
 }
@@ -41,3 +51,4 @@ if (isset($deleteGenreId)) {
         </div>
     </div>
 </div>
+<?php endif;?>

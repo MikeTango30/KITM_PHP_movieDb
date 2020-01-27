@@ -9,5 +9,6 @@ require "inc/db.php";
 require "inc/config.php";
 include "inc/links.php";
 require_once  "inc/functions.php";
+require_once  "inc/admin_functions.php";
 require_once "templates/".ACTIVE_TEMPLATE."/index.view.php";
 

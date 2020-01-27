@@ -1,4 +1,15 @@
 <?php
+if(!isset($_COOKIE["PHPSESSID"]))
+{
+    session_start();
+}
+if (!isset($_SESSION["user"])) {
+    header('Location:/KITM_PHP_movieDb/?page=login');
+}
+?>
+<?php if($_SESSION["user"] === "admin"):?>
+
+<?php
 $movie = [];
 
 $deleteMovieId = isset($_GET["delete"]) ? htmlspecialchars($_GET["delete"]) : htmlspecialchars($_GET["deleteRly"]);
@@ -45,3 +56,4 @@ if (isset($_GET["deleteRly"])) {
     </div>
   </div>
 </div>
+<?php endif;?>

@@ -8,16 +8,13 @@
 
 $menus = [
     "mainNavigation" => [
-//        "newest" => "Naujausi",
         "all" => "Visi filmai",
         "by_genre" => "Filmai pagal žanrą",
         "search" => "Paieška",
-        "login" => "Prisijungti",
-//        "statistics" => "Statistika"
         ],
     "sideNavigation" => [
         "/" => "Pradinis",
-//        "about" => "Apie projektą",
+        "login" => "Prisijungti",
         "controls" => [
             "categories_control" => "Kategorijų valdymas",
             "add" => "Pridėti filmą",
