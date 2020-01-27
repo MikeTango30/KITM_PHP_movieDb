@@ -3,24 +3,18 @@ if(!isset($_COOKIE["PHPSESSID"]))
 {
     session_start();
 }
-$_SESSION["counter"] = 0;
 
 if (isset($_SESSION["user"]) && $_SESSION["user"] === "admin") {
     header('Location:/KITM_PHP_movieDb/?page=movie_control');
 }
 
 $validationErrors = [];
-
 if (isset($_POST["login"])) {
     $validationErrors = validateLogin();
     if (!$validationErrors && verifyPassword()) {
         loginUser();
     } else {
-        $_SESSION["counter"] += 1;
-        var_dump($_SESSION["counter"]);
-        if ($_SESSION["counter"] >= 5) {
-          sleep(10);
-        }
+      $validationErrors = handleBadLoginAttempts($validationErrors);
     }
 }
 ?>

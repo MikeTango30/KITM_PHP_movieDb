@@ -12,6 +12,28 @@ function connectDb() {
     return $conn;
 }
 
+// SELECT Queries
+function searchMovies($searchQuery) {
+    $conn = connectDb();
+    $movies = [];
+    try {
+        if ($conn) {
+            $query = "SELECT movies.id, title, description, year, director, imdb, genre_name 
+                                        FROM movies 
+                                        JOIN genres ON movies.genre_id = genres.id WHERE title LIKE ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bindValue(1, "%$searchQuery%", PDO::PARAM_STR);
+            $stmt->execute();
+            $movies = $stmt->fetchAll();
+        }
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+    $conn = null;
+
+    return $movies;
+}
+
 function getAllMovies() {
     $conn = connectDb();
     $movies = [];
@@ -90,15 +112,6 @@ function getAllMovieTitles() {
     return $movies;
 }
 
-function validateGenre($genre){
-    $validationErrors = [];
-    if (empty($genre)) {
-        $validationErrors[] = "Reikia pasirinkti žanrą";
-    }
-
-    return $validationErrors;
-}
-
 function getAllGenres() {
     $conn = connectDb();
     $genres = [];
@@ -137,6 +150,16 @@ function getGenre($id) {
     return $genre;
 }
 
+// Validation
+function validateGenre($genre){
+    $validationErrors = [];
+    if (empty($genre)) {
+        $validationErrors[] = "Reikia pasirinkti žanrą";
+    }
+
+    return $validationErrors;
+}
+
 function isValidText($text) {
     $isValid = false;
     if (preg_match("/\w{1,100}/", htmlspecialchars($text))) {
@@ -153,27 +176,6 @@ function isValidId($id) {
     }
 
     return $isValid;
-}
-
-function searchMovies($searchQuery) {
-    $conn = connectDb();
-    $movies = [];
-    try {
-        if ($conn) {
-            $query = "SELECT movies.id, title, description, year, director, imdb, genre_name 
-                                        FROM movies 
-                                        JOIN genres ON movies.genre_id = genres.id WHERE title LIKE ?";
-            $stmt = $conn->prepare($query);
-            $stmt->bindValue(1, "%$searchQuery%", PDO::PARAM_STR);
-            $stmt->execute();
-            $movies = $stmt->fetchAll();
-        }
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-    $conn = null;
-
-    return $movies;
 }
 
 function validateLogin() {
@@ -213,8 +215,25 @@ function verifyPassword() {
     return password_verify($_POST["password"], $passwordHash["password"]);
 }
 
+// Login
 function loginUser() {
     $_SESSION["user"] = "admin";
     $_SESSION["counter"] = 0;
     header('Location:/KITM_PHP_movieDb/?page=movie_control');
+}
+
+function handleBadLoginAttempts($validationErrors){
+    $_SESSION["counter"]++;
+
+    if ($_SESSION["counter"] >= 4) {
+        $validationErrors[] = "Giliai įkvėpkite, neskubėkite, prisiminkite prisijungimą palengva";
+    }
+    if ($_SESSION["counter"] >= 5) {
+        sleep(5);
+        $_SESSION["counter"] = 0;
+        $validationErrors = [];
+        $validationErrors[] = "Na va, pailsėjote, pabandykite iš naujo dabar";
+    }
+
+    return $validationErrors;
 }
