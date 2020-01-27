@@ -6,6 +6,7 @@
  * Time: 09:15
  */
 require "inc/db.php";
+require_once "inc/functions.php";
 require "inc/config.php";
 include "inc/links.php";
 require_once "templates/".ACTIVE_TEMPLATE."/index.view.php";

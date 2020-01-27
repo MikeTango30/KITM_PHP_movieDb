@@ -32,8 +32,16 @@ if (isset($_GET['page'])) {
         case('update'):
             include ('templates/'.ACTIVE_TEMPLATE.'/pages/update_film.page.php');
             break;
+        case('categories_control'):
+            include ('templates/'.ACTIVE_TEMPLATE.'/pages/categories_control.page.php');
+            break;
+        case('add_category'):
+            include ('templates/'.ACTIVE_TEMPLATE.'/pages/add_category.page.php');
+            break;
+        case('delete_category'):
+            include ('templates/'.ACTIVE_TEMPLATE.'/pages/delete_category.page.php');
+            break;
         default: include ('templates/'.ACTIVE_TEMPLATE.'/pages/all_movie.page.php');
             break;
-
     }
 }

@@ -17,12 +17,12 @@ $menus = [
         ],
     "sideNavigation" => [
         "/" => "Pradinis",
-        "about" => "Apie projektą",
+//        "about" => "Apie projektą",
         "controls" => [
-            "category_control" => "Kategorijų valdymas",
+            "categories_control" => "Kategorijų valdymas",
             "add" => "Pridėti filmą",
             "movie_control" => "Filmų valdymas",
-            "logOf" => "Atsijungti"
+//            "logOf" => "Atsijungti"
             ]
     ]
 ];
